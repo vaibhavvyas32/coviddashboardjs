@@ -1,5 +1,6 @@
 * {
   margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -9,7 +10,12 @@ body {
 .app {
   display: flex;
   justify-content: space-evenly;
+  background-color: #f5f6fa;
   padding: 20px;
+}
+
+.app__dropdown {
+  background-color: white;
 }
 
 .app__left {

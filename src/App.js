@@ -6,13 +6,25 @@ import {
   Select,
   Card,
   CardContent,
-  Typography,
 } from "@material-ui/core";
 import InfoBox from "./Components/InfoBox";
+import Table from "./Components/Table";
 
 const App = () => {
   const [countries, setCountries] = useState([]); //This state is being used in Dropmenu
   const [country, setCountry] = useState("worldwide");
+  const [countryInfo, setCountryInfo] = useState({}); //Getting Country Infomation as per dropmenu selection
+  const [tableData, setTableData] = useState([]);
+
+  // Used for fetching default value for worldwide when page loads. Reason: Dropmenu only reacts when we select a value,
+  // not for default. So to display worldwide value by default we use this useEffect.
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all")
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
+  }, []);
 
   // This gets called once the webpage loads.
   useEffect(() => {
@@ -26,7 +38,7 @@ const App = () => {
             name: country.country,
             value: country.countryInfo.iso2,
           }));
-
+          setTableData(data);
           setCountries(countries);
         });
     };
@@ -40,9 +52,24 @@ const App = () => {
     // Here we are taking event value which we get from the MenuItem and setting it in countryCode variable. This creates a functionality like when we select a particular country in dropmenu , the value changes to that country.
     const countryCode = e.target.value;
 
-    setCountry(countryCode);
-  };
+    // https://disease.sh/v3/covid-19/all for worldwide
+    // https://disease.sh/v3/covid-19/countries/{country} for country specific
 
+    //To decide whether we want to set url for worldwide or country specific
+    const url =
+      countryCode === "worldwide"
+        ? "https://disease.sh/v3/covid-19/all"
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+
+    await fetch(url).then((response) =>
+      response.json().then((data) => {
+        setCountry(countryCode);
+        //All data of country.
+        setCountryInfo(data);
+      })
+    );
+  };
+  console.log(countryInfo);
   return (
     <>
       <div className="app">
@@ -50,7 +77,7 @@ const App = () => {
           <div className="app__header">
             <h1>Covid-19 Dashboard</h1>
             {/* -----DROP MENU----- */}
-            <FormControl className="app_dropdown">
+            <FormControl className="app__dropdown">
               <Select
                 variant="outlined"
                 value={country}
@@ -72,15 +99,28 @@ const App = () => {
           {/* -----COVID STAT CARDS----- */}
           {/* This displays Covid Stat Cards */}
           <div className="app__stats">
-            <InfoBox title="Covid Cases" total={303030} />
-            <InfoBox title="Recovered" total={303030} />
-            <InfoBox title="Deaths" total={303030} />
+            <InfoBox
+              title="Covid Cases"
+              cases={countryInfo.active}
+              todayCases={countryInfo.todayCases}
+              total={countryInfo.cases}
+            />
+            <InfoBox
+              title="Recovered"
+              todayCases={countryInfo.todayRecovered}
+              total={countryInfo.recovered}
+            />
+            <InfoBox
+              title="Deaths"
+              todayCases={countryInfo.todayDeaths}
+              total={countryInfo.deaths}
+            />
           </div>
         </div>
         <Card className="app__right">
           <CardContent>
-            <Typography color="textSecondary">hello hi hi ihiweh</Typography>
-            <Typography>Total</Typography>
+            <h3> Live Cases CountryWise </h3>
+            <Table countries={tableData} />
           </CardContent>
         </Card>
       </div>
