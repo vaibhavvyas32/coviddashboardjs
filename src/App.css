@@ -16,6 +16,7 @@ body {
 
 .app__dropdown {
   background-color: white;
+  min-width: 200px;
 }
 
 .app__left {
@@ -50,4 +51,17 @@ button:hover {
   color: black;
   background-color: #a5b4fc !important;
   text-transform: inherit !important;
+}
+
+.country__flag {
+  object-fit: contain;
+  height: 20px;
+  margin-right: 5px;
+  width: 100%;
+}
+
+.dropdown__items {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }

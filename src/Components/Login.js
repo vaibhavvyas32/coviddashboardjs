@@ -10,7 +10,7 @@ function Login() {
     <div className="login">
       <div className="login__container">
         <div className="login__text">
-          <h1>Covid Tracker</h1>
+          <h1>COVID-19 Tracker</h1>
         </div>
         <img
           src="https://img.icons8.com/ios/100/000000/coronavirus--v1.png"

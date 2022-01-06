@@ -21,6 +21,7 @@ const App = () => {
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({}); //Getting Country Infomation as per dropmenu selection
   const [tableData, setTableData] = useState([]);
+  const [isGuest, setIsGuest] = useState(true);
   const [isUserSignedIn, setIsUserSignedIn] = useState(false);
 
   // Used for fetching default value for worldwide when page loads. Reason: Dropmenu only reacts when we select a value,
@@ -44,6 +45,7 @@ const App = () => {
           const countries = data.map((country) => ({
             name: country.country,
             value: country.countryInfo.iso2,
+            flag: country.countryInfo.flag,
           }));
           setTableData(data);
           setCountries(countries);
@@ -88,7 +90,14 @@ const App = () => {
       });
   };
 
-  console.log(countryInfo);
+  const loginAsGuest = () => {
+    if (isGuest) {
+      setIsUserSignedIn(true);
+      toast("Logged In!");
+      setIsGuest(true);
+    }
+  };
+
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -125,7 +134,18 @@ const App = () => {
                   {/* This is the loop for displaying all the countries using map. */}
                   {countries.map((country) => {
                     return (
-                      <MenuItem value={country.value}>{country.name}</MenuItem>
+                      <MenuItem value={country.value}>
+                        <span className="dropdown__items">
+                          <span className="dropdown__img">
+                            <img
+                              src={country.flag}
+                              alt=""
+                              className="country__flag"
+                            />
+                          </span>
+                          <p>{country.name}</p>
+                        </span>
+                      </MenuItem>
                     );
                   })}
                 </Select>
@@ -164,7 +184,14 @@ const App = () => {
       </>
     );
   } else {
-    return <Login />;
+    return (
+      <>
+        <Login />
+        <Button className="login-as-guest" onClick={loginAsGuest}>
+          Continue as Guest
+        </Button>
+      </>
+    );
   }
 };
 
