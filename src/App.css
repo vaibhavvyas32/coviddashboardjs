@@ -39,3 +39,15 @@ body {
     flex-direction: column;
   }
 }
+
+button {
+  text-transform: inherit !important;
+  background-color: #eef2ff !important;
+  color: black;
+}
+
+button:hover {
+  color: black;
+  background-color: #a5b4fc !important;
+  text-transform: inherit !important;
+}

@@ -6,15 +6,22 @@ import {
   Select,
   Card,
   CardContent,
+  Button,
 } from "@material-ui/core";
 import InfoBox from "./Components/InfoBox";
 import Table from "./Components/Table";
+import Login from "./Components/Login";
+import { auth } from "./Firebase/firebase";
+import { signOut } from "firebase/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const [countries, setCountries] = useState([]); //This state is being used in Dropmenu
   const [country, setCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({}); //Getting Country Infomation as per dropmenu selection
   const [tableData, setTableData] = useState([]);
+  const [isUserSignedIn, setIsUserSignedIn] = useState(false);
 
   // Used for fetching default value for worldwide when page loads. Reason: Dropmenu only reacts when we select a value,
   // not for default. So to display worldwide value by default we use this useEffect.
@@ -69,63 +76,96 @@ const App = () => {
       })
     );
   };
-  console.log(countryInfo);
-  return (
-    <>
-      <div className="app">
-        <div className="app__left">
-          <div className="app__header">
-            <h1>Covid-19 Dashboard</h1>
-            {/* -----DROP MENU----- */}
-            <FormControl className="app__dropdown">
-              <Select
-                variant="outlined"
-                value={country}
-                onChange={onCountryChange}
-              >
-                {/* This is for Worldwide Option so we can display global data at once */}
-                <MenuItem value="worldwide">WorldWide</MenuItem>
-                {/* This is the loop for displaying all the countries using map. */}
-                {countries.map((country) => {
-                  return (
-                    <MenuItem value={country.value}>{country.name}</MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
-            {/* -----DROP MENU ENDS----- */}
-          </div>
 
-          {/* -----COVID STAT CARDS----- */}
-          {/* This displays Covid Stat Cards */}
-          <div className="app__stats">
-            <InfoBox
-              title="Covid Cases"
-              cases={countryInfo.active}
-              todayCases={countryInfo.todayCases}
-              total={countryInfo.cases}
-            />
-            <InfoBox
-              title="Recovered"
-              todayCases={countryInfo.todayRecovered}
-              total={countryInfo.recovered}
-            />
-            <InfoBox
-              title="Deaths"
-              todayCases={countryInfo.todayDeaths}
-              total={countryInfo.deaths}
-            />
+  const signOutWithGoogle = () => {
+    signOut(auth)
+      .then(() => {
+        setIsUserSignedIn(false);
+        toast("Logged Out!");
+      })
+      .catch((err) => {
+        console.log("error occured while logging out", err);
+      });
+  };
+
+  console.log(countryInfo);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsUserSignedIn(true);
+        toast("Logged In!");
+      }
+    });
+  }, []);
+
+  //Login Auth
+  if (isUserSignedIn) {
+    return (
+      <>
+        <div className="app">
+          <div className="app__left">
+            <div className="app__header">
+              <h1>COVID-19 DASHBOARD</h1>
+              <Button
+                className="login-with-google-btn"
+                onClick={signOutWithGoogle}
+              >
+                Log Out
+              </Button>
+              <ToastContainer />
+              {/* -----DROP MENU----- */}
+              <FormControl className="app__dropdown">
+                <Select
+                  variant="outlined"
+                  value={country}
+                  onChange={onCountryChange}
+                >
+                  {/* This is for Worldwide Option so we can display global data at once */}
+                  <MenuItem value="worldwide">WorldWide</MenuItem>
+                  {/* This is the loop for displaying all the countries using map. */}
+                  {countries.map((country) => {
+                    return (
+                      <MenuItem value={country.value}>{country.name}</MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              {/* -----DROP MENU ENDS----- */}
+            </div>
+
+            {/* -----COVID STAT CARDS----- */}
+            {/* This displays Covid Stat Cards */}
+            <div className="app__stats">
+              <InfoBox
+                title="Covid Cases"
+                cases={countryInfo.active}
+                todayCases={countryInfo.todayCases}
+                total={countryInfo.cases}
+              />
+              <InfoBox
+                title="Recovered"
+                todayCases={countryInfo.todayRecovered}
+                total={countryInfo.recovered}
+              />
+              <InfoBox
+                title="Deaths"
+                todayCases={countryInfo.todayDeaths}
+                total={countryInfo.deaths}
+              />
+            </div>
           </div>
+          <Card className="app__right">
+            <CardContent>
+              <h3> Live Cases CountryWise </h3>
+              <Table countries={tableData} />
+            </CardContent>
+          </Card>
         </div>
-        <Card className="app__right">
-          <CardContent>
-            <h3> Live Cases CountryWise </h3>
-            <Table countries={tableData} />
-          </CardContent>
-        </Card>
-      </div>
-    </>
-  );
+      </>
+    );
+  } else {
+    return <Login />;
+  }
 };
 
 export default App;

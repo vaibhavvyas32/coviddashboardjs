@@ -1,5 +1,6 @@
 import React from "react";
 import "./Table.css";
+import CountUp from "react-countup";
 
 function Table({ countries }) {
   return (
@@ -9,7 +10,9 @@ function Table({ countries }) {
           <tr>
             <td>{country}</td>
             <td>
-              <strong>{cases}</strong>
+              <strong>
+                <CountUp start={0} end={cases} duration={2.75} separator="," />
+              </strong>
             </td>
           </tr>
         ))}

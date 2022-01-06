@@ -1,0 +1,40 @@
+.login {
+  background-color: #f8f8f8;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login__container {
+  padding: 100px;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px;
+}
+
+.login__container > img {
+  object-fit: contain;
+  height: 70px;
+  margin-bottom: 40px;
+}
+
+img {
+  display: block;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login__container > button {
+  text-transform: inherit !important;
+  background-color: #eef2ff !important;
+  color: black;
+}
+.login__container > button:hover {
+  color: black;
+  background-color: #a5b4fc !important;
+  text-transform: inherit !important;
+}
