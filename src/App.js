@@ -115,12 +115,6 @@ const App = () => {
           <div className="app__left">
             <div className="app__header">
               <h1>COVID-19 DASHBOARD</h1>
-              <Button
-                className="login-with-google-btn"
-                onClick={signOutWithGoogle}
-              >
-                Log Out
-              </Button>
               <ToastContainer />
               {/* -----DROP MENU----- */}
               <FormControl className="app__dropdown">
@@ -130,7 +124,7 @@ const App = () => {
                   onChange={onCountryChange}
                 >
                   {/* This is for Worldwide Option so we can display global data at once */}
-                  <MenuItem value="worldwide">WorldWide</MenuItem>
+                  <MenuItem value="worldwide">World Wide</MenuItem>
                   {/* This is the loop for displaying all the countries using map. */}
                   {countries.map((country) => {
                     return (
@@ -157,29 +151,37 @@ const App = () => {
             {/* This displays Covid Stat Cards */}
             <div className="app__stats">
               <InfoBox
-                title="Covid Cases"
+                title="COVID-19 Cases"
                 cases={countryInfo.active}
                 todayCases={countryInfo.todayCases}
                 total={countryInfo.cases}
+                className="infoBox"
               />
               <InfoBox
                 title="Recovered"
                 todayCases={countryInfo.todayRecovered}
                 total={countryInfo.recovered}
+                className="recovered"
               />
               <InfoBox
                 title="Deaths"
                 todayCases={countryInfo.todayDeaths}
                 total={countryInfo.deaths}
+                className="deaths"
               />
             </div>
           </div>
-          <Card className="app__right">
-            <CardContent>
-              <h3> Live Cases CountryWise </h3>
-              <Table countries={tableData} />
-            </CardContent>
-          </Card>
+          <div className="app__right">
+            <Button className="btn-logout" onClick={signOutWithGoogle}>
+              Log Out{" "}
+            </Button>
+            <Card>
+              <CardContent>
+                <h3> Live Cases CountryWise </h3>
+                <Table countries={tableData} />
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </>
     );
@@ -187,6 +189,7 @@ const App = () => {
     return (
       <>
         <Login />
+
         <Button className="login-as-guest" onClick={loginAsGuest}>
           Continue as Guest
         </Button>

@@ -1,10 +1,20 @@
 .infoBox {
   flex: 1;
-}
-
-.infoBox:not(:last-child) {
+  border-bottom: 10px solid rgba(0, 0, 255, 0.5);
   margin-right: 20px;
 }
+
+.recovered {
+  flex: 1;
+  border-bottom: 10px solid rgba(0, 255, 0, 0.5);
+  margin-right: 20px;
+}
+
+.deaths {
+  flex: 1;
+  border-bottom: 10px solid rgba(255, 0, 0, 0.5);
+}
+
 .info__cases {
   color: #2600ff;
   font-weight: 600;

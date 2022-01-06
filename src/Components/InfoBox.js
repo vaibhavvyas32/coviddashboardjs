@@ -3,10 +3,10 @@ import { Card, CardContent, Typography } from "@material-ui/core";
 import CountUp from "react-countup";
 import "./infoBox.css";
 
-function InfoBox({ title, cases, total, todayCases }) {
+function InfoBox({ title, cases, total, todayCases, className }) {
   return (
     <>
-      <Card className="infoBox">
+      <Card className={className}>
         <CardContent>
           {/* Title */}
           {/* <Typography className="info__title" color="textSecondary"> */}
