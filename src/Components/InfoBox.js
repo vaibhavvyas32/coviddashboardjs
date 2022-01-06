@@ -4,12 +4,6 @@ import CountUp from "react-countup";
 import "./infoBox.css";
 
 function InfoBox({ title, cases, total, todayCases }) {
-  //For Current Date Display.
-  let date_ob = new Date();
-  let date = ("0" + date_ob.getDate()).slice(-2);
-  let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-  let year = date_ob.getFullYear();
-
   return (
     <>
       <Card className="infoBox">
@@ -37,8 +31,6 @@ function InfoBox({ title, cases, total, todayCases }) {
             <CountUp start={0} end={total} duration={2.75} separator="," />{" "}
             Total
           </Typography>
-          {/* Date */}
-          <Typography>{date + "-" + month + "-" + year}</Typography>
         </CardContent>
       </Card>
     </>
