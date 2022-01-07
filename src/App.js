@@ -114,7 +114,10 @@ const App = () => {
         <div className="app">
           <div className="app__left">
             <div className="app__header">
-              <h1>COVID-19 DASHBOARD</h1>
+              <h1 className="box__text">
+                <span className="box__text1">COVID-19</span>
+                DASHBOARD
+              </h1>
               <ToastContainer />
               {/* -----DROP MENU----- */}
               <FormControl className="app__dropdown">
@@ -172,7 +175,7 @@ const App = () => {
             </div>
           </div>
           <div className="app__right">
-            <Button className="btn-logout" onClick={signOutWithGoogle}>
+            <Button variant="contained" onClick={signOutWithGoogle}>
               Log Out{" "}
             </Button>
             <Card>
@@ -190,7 +193,11 @@ const App = () => {
       <>
         <Login />
 
-        <Button className="login-as-guest" onClick={loginAsGuest}>
+        <Button
+          variant="contained"
+          className="login-as-guest"
+          onClick={loginAsGuest}
+        >
           Continue as Guest
         </Button>
       </>

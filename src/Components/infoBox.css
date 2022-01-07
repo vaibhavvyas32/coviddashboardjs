@@ -16,16 +16,16 @@
 }
 
 .info__cases {
-  color: #2600ff;
+  color: rgba(0, 0, 255, 0.5);
   font-weight: 600;
-  font-size: 1.75rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
 .info__total {
   color: #6c757d;
   font-weight: 1000 !important;
-  font-size: 0.8rem !important;
+  font-size: 2rem !important;
   margin-top: 15px !important;
 }
 
