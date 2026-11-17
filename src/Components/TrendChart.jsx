@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useReducedMotion } from "motion/react";
 import { Area, AreaChart, CartesianGrid, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { findPeak } from "../lib/history";
 import { formatCompact, formatDate, formatNumber } from "../lib/format";
@@ -56,6 +57,7 @@ function ChartMessage({ children }) {
 /** Daily new cases or deaths as a 7-day average, with the peak day marked. */
 export default function TrendChart({ placeName, history }) {
   const [metricValue, setMetricValue] = useState("cases");
+  const reduceMotion = useReducedMotion();
   const metric = TREND_METRICS.find((item) => item.value === metricValue);
   const dataKey = `${metric.value}Average`;
 
@@ -143,6 +145,7 @@ export default function TrendChart({ placeName, history }) {
                 stroke={metric.color}
                 strokeWidth={2}
                 fill="url(#trend-fill)"
+                isAnimationActive={!reduceMotion}
                 animationDuration={900}
               />
               {peak && (

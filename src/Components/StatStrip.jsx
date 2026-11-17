@@ -4,6 +4,10 @@ import { formatNumber } from "../lib/format";
 const percentOf = (part, total) => (total ? `${((part / total) * 100).toFixed(1)}%` : "—");
 
 function buildStats(data) {
+  // Some countries stopped reporting recoveries, and the API then returns 0. "Active" is cases minus
+  // recoveries, so it is meaningless for those countries too.
+  const recoveriesReported = data.recovered > 0 || data.cases === 0;
+
   return [
     {
       key: "cases",
@@ -12,17 +16,21 @@ function buildStats(data) {
       value: data.cases,
       today: data.todayCases,
       details: [
-        `${formatNumber(data.active)} still active`,
+        recoveriesReported && `${formatNumber(data.active)} still active`,
         `${formatNumber(data.casesPerOneMillion)} per million people`,
-      ],
+      ].filter(Boolean),
     },
     {
       key: "recovered",
       label: "Recovered",
       dot: "bg-recovered",
-      value: data.recovered,
+      value: recoveriesReported ? data.recovered : null,
       today: data.todayRecovered,
-      details: [`${percentOf(data.recovered, data.cases)} of all cases`],
+      details: [
+        recoveriesReported
+          ? `${percentOf(data.recovered, data.cases)} of all cases`
+          : "This country stopped reporting recoveries",
+      ],
     },
     {
       key: "deaths",
@@ -63,13 +71,21 @@ export default function StatStrip({ data }) {
                 {stat.label}
               </dt>
               <dd className="mt-2">
-                <span className="sr-only">{formatNumber(stat.value)}</span>
-                <span
-                  aria-hidden="true"
-                  className="block font-display text-4xl font-semibold tracking-tight lg:text-5xl"
-                >
-                  <Counter value={stat.value ?? 0} fontSize="inherit" fontWeight="inherit" />
-                </span>
+                {stat.value === null ? (
+                  <span className="block font-display text-4xl font-semibold tracking-tight text-muted lg:text-5xl">
+                    Not reported
+                  </span>
+                ) : (
+                  <>
+                    <span className="sr-only">{formatNumber(stat.value)}</span>
+                    <span
+                      aria-hidden="true"
+                      className="block font-display text-4xl font-semibold tracking-tight lg:text-5xl"
+                    >
+                      <Counter value={stat.value} fontSize="inherit" fontWeight="inherit" />
+                    </span>
+                  </>
+                )}
                 <span className="mt-3 block space-y-0.5 text-sm text-muted">
                   {stat.today > 0 && (
                     <span className="block font-semibold text-ink">+{formatNumber(stat.today)} reported today</span>
