@@ -1,46 +1,51 @@
-# COVID-19 Dashboard Js
+# COVID-19 Dashboard
 
-![Covid 19 Dashboard](https://zippyimage.com/images/2022/01/06/acaae46de7b6b08c14a10c55ade23528.png)
+COVID-19 cases, recoveries and deaths for every country, with daily history, a world map and rankings.
+Light and dark themes, built mobile-first.
 
-
-
-
-
-
-A Simple Responsive website which shows COVID-19 Stats according to the global data in the [API.](https://disease.sh/)
-
+**Live:** [covid19-dashboardjs.netlify.app](https://covid19-dashboardjs.netlify.app/) · Made by [Vaibhav](https://vvyas.in)
 
 ## Features
 
- 1. Authentication using FirebaseJS (Login Logout Both)
- 2. Global Data
- 3. Country Wise Data
- 4. Active Cases 
- 5. Recovered 
- 6. Deaths 
- 7. Current Day's Total for all 3.
- 8. Overall Total for all 3.
- 
+- Worldwide and per-country totals for cases, recoveries and deaths, with per-million rates
+- Searchable country picker
+- Daily new cases or deaths as a 7-day average, with the peak day marked
+- World map shaded by cases per million, deaths per million or total cases; click a country to select it
+- Every country ranked by the same metric
+- Light/dark theme that follows the system setting and remembers your choice
 
+## Design
 
-## Run and Build 
+The palette comes from the microscope. Light mode uses histology stains (hematoxylin violet, methyl green,
+eosin pink); dark mode uses fluorescence dyes (DAPI blue, GFP green, Texas red). Headings are set in
+Bricolage Grotesque and body text in Atkinson Hyperlegible Next, a face designed for legibility.
 
-    npm start
+## Run and build
 
-> To start the application
+```bash
+npm install
+npm start          # dev server
+npm run build      # production build in dist/
+npm run preview    # serve the production build
+```
 
-    npm build
-    
+## Project structure
 
-> to build the application
+```
+src/
+  App.jsx              page layout and selected-country state
+  Components/          dashboard sections (hero, stats, chart, map, ranking, header, footer)
+  reactbits/           components from React Bits, kept as published
+  hooks/               data fetching and theme
+  lib/                 API client, formatting, chart and map helpers
+  index.css            Tailwind setup and colour tokens
+```
 
-## Tech Used
- - ReactJS
- - HTML
- - CSS
- - Material UI
- - Disease.sh API
- 
-## Live Showcase
-[Live showcase](https://covid19-dashboardjs.netlify.app/)
+## Tech
 
+- React 19 and Vite
+- Tailwind CSS 4
+- [React Bits](https://reactbits.dev): BlurText, Counter, DotGrid, RubberSegment, SquishSwitch
+- Recharts, d3-geo and world-atlas for the chart and map
+- Headless UI for the country picker
+- Data from the [disease.sh](https://disease.sh) API (Worldometers totals, Johns Hopkins CSSE history)

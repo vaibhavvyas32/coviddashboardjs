@@ -1,0 +1,68 @@
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/atkinson-hyperlegible-next";
+@import "tailwindcss";
+
+/* Dark mode follows a `.dark` class on <html> (set by useTheme and the inline script in index.html). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Palette borrowed from the microscope.
+  Light ("brightfield"): the classic histology stains, hematoxylin violet, methyl green and eosin pink.
+  Dark ("fluorescence"): the glowing dyes of fluorescence microscopy, DAPI blue, GFP green and Texas red.
+*/
+:root {
+  --paper: #f6f5fa;
+  --surface: #ffffff;
+  --ink: #1d1730;
+  --muted: #615a78;
+  --line: #e2dfeb;
+  --cases: #5b3fa8;
+  --recovered: #18785f;
+  --deaths: #c02a5e;
+  color-scheme: light;
+}
+
+.dark {
+  --paper: #0c0a14;
+  --surface: #14111e;
+  --ink: #ebe8f5;
+  --muted: #a39dba;
+  --line: #2a2539;
+  --cases: #93a6ff;
+  --recovered: #5fe0a5;
+  --deaths: #ff6f96;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-cases: var(--cases);
+  --color-recovered: var(--recovered);
+  --color-deaths: var(--deaths);
+
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible Next Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    @apply bg-paper text-ink font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply min-h-dvh;
+  }
+
+  ::selection {
+    @apply bg-cases text-paper;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-cases;
+  }
+}
