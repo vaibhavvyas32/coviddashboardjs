@@ -13,7 +13,9 @@ export function useCovidSummary() {
 
     Promise.all([fetchWorldSummary({ signal: controller.signal }), fetchCountries({ signal: controller.signal })])
       .then(([world, countries]) => {
-        const sorted = [...countries].sort((a, b) => a.country.localeCompare(b.country));
+        const sorted = countries
+          .filter((item) => item.countryInfo?.iso3) // drops cruise ships, which have no country code
+          .sort((a, b) => a.country.localeCompare(b.country));
         setState({ status: "ready", world, countries: sorted });
       })
       .catch((error) => {
